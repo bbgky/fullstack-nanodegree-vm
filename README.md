@@ -11,10 +11,10 @@ To run the results:
 
 The first three steps are to create database and tables.
 
-4. `python tournament_test.py`
+Run  `python tournament_test.py`
 
 If the code is correct, should see output:
-'''
+```
 1. countPlayers() returns 0 after initial deletePlayers() execution.
 2. countPlayers() returns 1 after one player is registered.
 3. countPlayers() returns 2 after two players are registered.
@@ -26,4 +26,4 @@ If the code is correct, should see output:
 9. Matches are properly deleted.
 10. After one match, players with one win are properly paired.
 Success!  All tests pass!
-'''
+```
