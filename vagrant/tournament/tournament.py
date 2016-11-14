@@ -4,8 +4,6 @@
 #
 
 import psycopg2
-import bleach
-
 
 def connect(dbname='tournament'):
     """Connect to the PostgreSQL database.  Returns a database connection."""
@@ -50,7 +48,7 @@ def registerPlayer(name):
     """
     db, cur = connect()
     cur.execute("insert into players (name) values(%s);",
-                (bleach.clean(name),))
+                (name,))
     db.commit()
     db.close()
 
@@ -69,16 +67,7 @@ def playerStandings():
         matches: the number of matches the player has played
     """
     db, cur = connect()
-    cur.execute('''
-                    Select id, name, count(w_id) as wins,
-                    count(w_id)+count(L.l_id) as total
-                    From players
-                    left join matches  on players.id = matches.w_id
-                    left join (Select l_id From matches) AS L
-                    on players.id = L.l_id
-                    Group by id, name
-                    Order by wins Desc;
-                ''')
+    cur.execute("Select * from standings;")
     standings = [(row[0], row[1], row[2], row[3]) for row in cur.fetchall()]
     db.close()
     return standings

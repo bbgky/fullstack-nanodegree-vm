@@ -15,7 +15,17 @@ CREATE TABLE players (
 );
 
 CREATE TABLE matches (
-  match_id serial,
+  match_id serial PRIMARY KEY,
   w_id int REFERENCES players(id),
   l_id int REFERENCES players(id)
 );
+
+CREATE VIEW standings AS
+  Select id, name, count(w_id) as wins,
+        count(w_id)+count(L.l_id) as total
+        From players
+        left join matches  on players.id = matches.w_id
+        left join (Select l_id From matches) AS L
+        on players.id = L.l_id
+        Group by id, name
+        Order by wins Desc;
